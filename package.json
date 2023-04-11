@@ -1,0 +1,23 @@
+{
+  "name": "vitepress-nav",
+  "version": "1.0.0",
+  "description": "基于 VitePress 打造前端导航网站",
+  "private": true,
+  "scripts": {
+    "dev": "vitepress dev docs --port=8732",
+    "build": "vitepress build docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@femm/prettier": "^1.0.1",
+    "@mdit-vue/shared": "^0.12.0",
+    "sass": "^1.58.3",
+    "vitepress": "1.0.0-alpha.48",
+    "vue": "^3.2.47"
+  },
+  "prettier": "@femm/prettier"
+}
