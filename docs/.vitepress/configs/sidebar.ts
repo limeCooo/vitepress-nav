@@ -48,6 +48,21 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
       items: [
         { text: 'Select', link: '/subassembly/select/' },
       ]
+    },
+    {
+      text: '搜索表单页',
+      collapsed: false,
+      items: [
+        { text: 'SearchForm', link: '/subassembly/search/searchForm' },
+        { text: 'SearchTable', link: '/subassembly/search/searchTable' },
+        { text: 'SearchPageView', link: '/subassembly/search/pageView' },
+      ]
+    },
+    {
+      text: '快捷复制页',
+      items: [
+        { text: 'table快捷复制页', link: '/subassembly/search/tableView' },
+      ]
     }
   ]
 }

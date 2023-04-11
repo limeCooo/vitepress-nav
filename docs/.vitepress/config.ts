@@ -32,7 +32,7 @@ export default defineConfig({
       label: '本页目录'
     },
 
-    socialLinks: [{ icon: 'github', link: '' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/limeCooo' }],
 
     footer: {
       message: '如有转载或 CV 的请标注本站原文地址',

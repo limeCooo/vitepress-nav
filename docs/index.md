@@ -17,11 +17,12 @@ hero:
 #      theme: alt
 
 features:
-  - icon: 🧰
+  - icon: 📗
     title: 前端导航。
     details: 前端导航
     link: /nav
-  - icon: 📖
+    linkText: 前端导航
+  - icon: 📙
     title: 常用知识
     details: 整理前端常用知识点<br />如有异议按你的理解为主，不接受反驳
     link: /fe/javascript/types
