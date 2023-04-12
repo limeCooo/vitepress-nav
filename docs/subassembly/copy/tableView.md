@@ -1,5 +1,6 @@
-# 表格查询快捷复制页
+# 报表快捷复制页
 
+## 基础查询报表
 ::: tip 温馨提示
  
 - 这个才是最好用的，我是不用上面封装的
@@ -53,29 +54,35 @@
           }"
         :height="tableHeight"
       >
-
         <el-table-column label="逝者姓名" align='center' prop="deadName" width=""></el-table-column>
         <el-table-column label="年龄" align="center" prop="deadAge" width=""></el-table-column>
         <el-table-column label="性别" align='center' prop="deadGender" width=""></el-table-column>
         <el-table-column label="炉号" align='center' prop="furnaceCode" width=""></el-table-column>
         <el-table-column label="火化状态" align='center' prop="processState" width=""></el-table-column>
-
-
       </el-table>
-
+      <el-row type="flex" justify="end" class="pagination-wrap">
+        <el-pagination
+          background
+          :current-page.sync="pager.currentPage"
+          :page-size="pager.pageSize"
+          :page-sizes="[10, 20, 50, 100]"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange"
+          :total="pager.total"
+          @current-change="handleCurrentChange">
+        </el-pagination>
+      </el-row>
     </div>
 
   </div>
 </template>
 
 <script>
-import * as Type from '@/api/service'
 import {cremationAppointmentDetailExport, searchCremationAppointmentDetail} from "@/api/service";
-import {getLodop} from "@/utils/lodopFuncs";
 import download from "@/api/download";
 
 export default {
-  name: "storageStatisticsOfFreezers",
+  name: "name",
 
   data() {
     return {
@@ -133,41 +140,45 @@ export default {
     });
   },
   methods: {
-
+    // 点击查询按钮时触发，调用queryTableList方法获取列表数据
     onSubmit() {
-      // this.pager.currentPage = 1;
       this.queryTableList();
     },
 
+    // 分页器页码改变时触发，调用queryTableList方法获取列表数据
     handleCurrentChange(val) {
-      // this.pager.currentPage = val
       this.queryTableList();
     },
 
+    // 分页器每页显示条数改变时触发，修改pager的pageSize，调用queryTableList方法获取列表数据
     handleSizeChange(val) {
-      this.pager.pageSize = val
+      this.pager.pageSize = val;
       this.queryTableList();
     },
 
-    //获取列表数据
+    // 获取列表数据的方法，调用searchCremationAppointmentDetail接口查询数据，更新tableData和pager
     async queryTableList() {
-      let res = await searchCremationAppointmentDetail({...this.queryForm})
-      const {data, code} = res;
-      if (code !== 1) {
-        this.$message('数据读取失败')
-      } else {
-        this.tableData = data.list;
-        this.pager = data.pager
+      try {
+        const res = await searchCremationAppointmentDetail({...this.queryForm});
+        const {data, code} = res;
+        if (code !== 1) {
+          this.$message('数据读取失败');
+        } else {
+          this.tableData = data.list;
+          this.pager = data.pager;
+        }
+      } catch (error) {
+        console.error(error);
+        this.$message('数据读取失败');
       }
     },
 
+    // 导出Excel报表的方法，调用exportExcel接口下载Excel文件
     exportExcelFun() {
-      download.exportExcel(cremationAppointmentDetailExport, {...this.queryForm}, `火化预约报表${download.getDateTime()}.xlsx`);
-
+      download.exportExcel(cremationAppointmentDetailExport, {...this.queryForm}, `${this.$route.name}${download.getDateTime()}.xlsx`);
     },
+  },
 
-
-  }
 };
 </script>
 

@@ -32,7 +32,7 @@
 - `require` 用于加载模块文件(读入并执行一个 `JavaScript` 文件并返回该模块的 `exports` 对象)
 
 ```js
-/* util.js */
+/* utils.js */
 const name = 'zhangsan'
 exports.name = name
 module.exports.log = function () {
@@ -40,7 +40,7 @@ module.exports.log = function () {
 }
 
 /* index.js */
-const util = require('./util.js)
+const util = require('./utils.js)
 util.name
 util.log()
 ```

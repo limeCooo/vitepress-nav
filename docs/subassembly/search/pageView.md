@@ -5,6 +5,7 @@
 
 
 
+## 封装页面整页
 
 ```vue
 <template>
@@ -47,7 +48,7 @@ export default {
   data() {
     return {
       //search
-      ruleForm: {
+      queryForm: {
         startDate: '',
         endDate: '',
       },
@@ -186,7 +187,7 @@ export default {
   methods: {
 
     onSubmit(formData) {
-      this.ruleForm = formData;
+      this.queryForm = formData;
       this.pager.currentPage = 1;
       this.queryTableList();
     },
@@ -203,27 +204,26 @@ export default {
 
     },
 
-    //获取列表数据
-    queryTableList() {
-      let postData = {
-        ...this.ruleForm,
-        ...this.pager
-      }
-      Type['searchBaseServiceCharge'](postData).then(response => {
-        const {data, code} = response;
+    // 获取列表数据的方法，调用searchCremationAppointmentDetail接口查询数据，更新tableData和pager
+    async queryTableList() {
+      try {
+        const res = await searchCremationAppointmentDetail({...this.queryForm,...this.pager});
+        const {data, code} = res;
         if (code !== 1) {
-          this.$message('数据读取失败')
-          return
+          this.$message('数据读取失败');
+        } else {
+          this.tableData = data.list;
+          this.pager = data.pager;
         }
-        this.tableData = data.list;
-        this.pager = data.pager
-      }).catch(error => {
-        this.$message(error)
-      })
+      } catch (error) {
+        console.error(error);
+        this.$message('数据读取失败');
+      }
     },
+    // 导出Excel报表的方法，调用exportExcel接口下载Excel文件
     exportExcelFun() {
-      download.exportExcel(Type.baseServiceChargeExportExcel, {...this.ruleForm}, `步凤惠民统计${download.getDateTime()}.xlsx`);
-    }
+      download.exportExcel(cremationAppointmentDetailExport, {...this.queryForm}, `${this.$route.name}${download.getDateTime()}.xlsx`);
+    },
   }
 };
 </script>

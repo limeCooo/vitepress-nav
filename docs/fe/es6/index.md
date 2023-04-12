@@ -955,7 +955,7 @@ x ?? (x = y)
 - `export` 命令可以出现在模块的任何位置，只要处于**模块顶层**就可以(在块级作用域内使用会报错)
 
 ```js
-// util.js
+// utils.js
 /* 单个输出 */
 export const name = 'zhangsan'
 export function log() {
@@ -987,13 +987,13 @@ export { name as nickname }
 
 ```js
 // index.js
-import { name, log } from './util'
+import { name, log } from './utils'
 
 /* 使用 as 关键字重命名 */
-import { name as nickname, log as logName } from './util'
+import { name as nickname, log as logName } from './utils'
 
 /* 模块的整体加载 */
-import * as util from './util'
+import * as util from './utils'
 util.name // zhangsan
 util.log() // zhangsan
 ```
@@ -1091,9 +1091,9 @@ export default es6;
 export { default as es6 } from 'my_module';
 
 /* 整体加载 */
-export * as util from "util";
+export * as util from "utils";
 // 等同于
-import * as util from "util";
+import * as util from "utils";
 export {util};
 ```
 
