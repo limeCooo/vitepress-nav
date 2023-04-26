@@ -45,19 +45,22 @@ export function extractInfoFromIDCard(idCard, separator = '-') {
 }
 
 function isIDCard(idCard) {
-  const regExp18 = /^[\d]{17}[X\d]$/;
-  const regExp15 = /^[\d]{15}$/;
-  if (regExp18.test(idCard)) {
-    const code = idCard.split("");
-    const factor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
-    const parity = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2];
-    let sum = 0;
-    for (let i = 0; i < 17; i++) {
-      sum += parseInt(code[i]) * factor[i];
+  let regExp = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+  if (regExp.test(idCard)) {
+    if (idCard.length === 18) {
+      let code = idCard.split("");
+      let factor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+      let parity = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2];
+      let sum = 0;
+      for (let i = 0; i < 17; i++) {
+        sum += parseInt(code[i]) * factor[i];
+      }
+      if (parity[sum % 11] == code[17].toUpperCase()) {
+        return true;
+      }
+    } else if (idCard.length === 15) {
+      return true;
     }
-    return parity[sum % 11] === code[17].toUpperCase();
-  } else if (regExp15.test(idCard)) {
-    return true;
   }
   return false;
 }
@@ -109,6 +112,7 @@ function calculateAge(birthDate, deathDate) {
 - #### 参数
 
   - **type:** 类型 arr time 默认string
+  - **monthsToAdd:** 默认0 //获取几个月后的时间
 
 - #### 返回值
 
@@ -117,25 +121,27 @@ function calculateAge(birthDate, deathDate) {
   - **default:** 2023-04-01
 
 ```js
-function getNowDate(type) {
+function getNowDate(type, monthsToAdd = 0) {
   let now = new Date();
+  now.setMonth(now.getMonth() + monthsToAdd);
   let year = now.getFullYear(); //得到年份
   let month = now.getMonth(); //得到月份
   let date = now.getDate(); //得到日期
-  let hour = now.getHours()
-  let minute = now.getMinutes()
+  let hour = now.getHours();
+  let minute = now.getMinutes();
   month = month + 1;
   year = year.toString();
   month = month.toString().padStart(2, "0");
   date = date.toString().padStart(2, "0");
   hour = hour.toString().padStart(2, "0");
   minute = minute.toString().padStart(2, "0");
-  if (type === 'arr') {
-    return [year, month, date]
-  } else if (type === 'time') {
-    return `${year}-${month}-${date} ${hour}:${minute}`
+  if (type === "arr") {
+    return [year, month, date];
+  } else if (type === "time") {
+    return `${year}-${month}-${date} ${hour}:${minute}`;
   } else {
-    return `${year}-${month}-${date}`
+    return `${year}-${month}-${date}`;
   }
 }
+
 ```

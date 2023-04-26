@@ -74,5 +74,12 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     },
     { text: 'npm 常用命令', link: '/subassembly/node/npm' },
 
+  ],
+
+  '/tool/': [
+    {
+      text: '在线生成表格',
+      link: '/tool/handsontable/handsontable'
+    },
   ]
 }

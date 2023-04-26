@@ -31,6 +31,7 @@ Vue.component('JSelect', JSelect);
   filterable
   clearable
   placeholder="请选择"
+  returnType="label"
 />
 ```
 
@@ -39,6 +40,7 @@ Vue.component('JSelect', JSelect);
 - filterable：是否支持过滤选项，默认为 true
 - clearable：是否支持清空已选项，默认为 true
 - placeholder：输入框默认占位文本
+- returnType：返回值的类型需要返回value还是label 默认返回value
 - 需要注意的是，组件的 value 属性和 v-model 属性不要同时使用
 
 ::: tip 温馨提示
@@ -62,18 +64,18 @@ Vue.component('JSelect', JSelect);
     filterable
     clearable
   >
-  <el-option
-    v-for="(option, index) in dictionaryOptions"
-    :key="index"
-    :label="option.label"
-    :value="option.value"
+    <el-option
+      v-for="(option, index) in dictionaryOptions"
+      :key="index"
+      :label="option.label"
+      :value="returnType === 'label' ? option.label : option.value"
     />
-</el-select>
+  </el-select>
 </template>
 
 <script>
-  // 组件定义
-  export default {
+// 组件定义
+export default {
   name: "DictionarySelect", // 组件名称
 
   // 组件属性
@@ -82,11 +84,11 @@ Vue.component('JSelect', JSelect);
       type: String,
       required: true
     },
-      value: { // 已选中的值
+    value: { // 已选中的值
       type: [String, Number],
       default: ""
     },
-      returnType: { // 返回值类型，默认为"value"或"label"
+    returnType: { // 返回值类型，默认为"value"或"label"
       type: String,
       default: "value",
       validator: (value) => {
@@ -97,44 +99,48 @@ Vue.component('JSelect', JSelect);
 
   // 计算属性
   computed: {
-  // 根据数据字典获取选项列表
-  dictionaryOptions() {
-    // 从本地存储获取数据字典，如果没有则从远程获取
-    const dict = this.getDictionaryFromStorage() || this.getDictByName(this.name);
-        if (dict) {
+    // 根据数据字典获取选项列表
+    dictionaryOptions() {
+      // 从本地存储获取数据字典，如果没有则从远程获取
+      const dict = this.getDictionaryFromStorage() || this.getDictByName(this.name);
+      if (dict) {
         // 将数据字典格式化为选项列表
-          return dict.map(item => ({
+        return dict.map(item => ({
           label: item.dataText,
           value: item.dataCode,
         }));
-        } else {
-          return [];
-        }
-      },
-        selectedValue() { // 已选中的值，根据 returnType 返回对应的值
-          return this.returnType === "label" ? this.selectedLabel : this.selected;
-        },
-        selectedLabel() { // 已选中的值的标签
-          const option = this.dictionaryOptions.find(opt => opt.value === this.selected);
-          return option ? option.label : "";
-        }
+      } else {
+        return [];
+      }
+    },
+    selectedValue() { // 已选中的值，根据 returnType 返回对应的值
+      return this.returnType === "label" ? this.selectedLabel : this.selected;
+    },
+    selectedLabel() { // 已选中的值的标签
+      const option = this.dictionaryOptions.find(opt => {
+        return  this.returnType === 'label' ? opt.label === this.selected : opt.value === this.selected
+      });
+      return option ? option.label : "";
+    }
   },
 
   // 监听属性变化
   watch: {
     name: { // 监听 name 属性变化
-    handler() {
-    this.options = this.dictionaryOptions;
-    },
+      handler() {
+        this.options = this.dictionaryOptions;
+      },
       immediate: true
     },
-      value: { // 监听 value 属性变化
+    value: { // 监听 value 属性变化
       handler(newValue) {
-      this.selected = newValue;
-    },
+        if (newValue) {
+          this.selected = newValue;
+        }
+      },
       immediate: true
     },
-      selected() { // 监听 selected 属性变化
+    selected() { // 监听 selected 属性变化
       this.$emit("input", this.selectedValue);
     }
   },
@@ -146,11 +152,12 @@ Vue.component('JSelect', JSelect);
       options: [] // 选项列表
     };
   },
-  mounted(){
-    console.log(this.$attrs)
+  mounted() {
+    // console.log(this.$attrs)
   },
   // 组件方法
   methods: {
+
     async getDictByName(name) { // 根据名称从远程获取数据字典
       const res = await this.$store.dispatch("user/getdictionary");
       return res[name];
@@ -162,6 +169,7 @@ Vue.component('JSelect', JSelect);
   }
 };
 </script>
+
 
 
 ```
