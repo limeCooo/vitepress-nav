@@ -69,10 +69,8 @@ showFormDialog(type, row) {
 resetForm() {
   // 清空表单数据
   this.$refs.paramsForm.resetFields()
-  this.paramsForm = {
-    smsTitle: '',
-    smsContent: '',
-  }
+  this.paramsForm = this.$options.data().paramsForm
+
 },
 submitForm() {
   this.$refs.paramsForm.validate(valid => {
@@ -327,7 +325,7 @@ export default {
     resetForm() {
       // 清空表单数据
       this.$refs.paramsForm.resetFields()
-      this.form = this.$options.data().paramsForm
+      this.paramsForm = this.$options.data().paramsForm
 
     },
     submitForm() {
