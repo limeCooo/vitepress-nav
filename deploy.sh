@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # 忽略错误
-set -e
+#set -e
 
 # 构建
 npm run build
