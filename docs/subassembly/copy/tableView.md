@@ -141,8 +141,8 @@ export default {
   },
   methods: {
     // 点击查询按钮时触发，调用queryTableList方法获取列表数据
-    onSubmit() {
-      this.queryTableList();
+    onSubmit(type) {
+      this.queryTableList(type);
     },
 
     // 分页器页码改变时触发，调用queryTableList方法获取列表数据
@@ -157,7 +157,10 @@ export default {
     },
 
     // 获取列表数据的方法，调用searchCremationAppointmentDetail接口查询数据，更新tableData和pager
-    async queryTableList() {
+    async queryTableList(type) {
+      if(type ==='search'){
+        this.pager.currentPage = 1
+      }
       try {
         const res = await searchCremationAppointmentDetail({...this.queryForm});
         const {data, code} = res;

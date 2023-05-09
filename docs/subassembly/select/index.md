@@ -174,3 +174,111 @@ export default {
 
 ```
 
+```vue
+
+<script setup lang="ts">
+import { ref, computed, watch, onMounted } from 'vue';
+
+interface DictionaryOption {
+  label: string;
+  value: string | number;
+}
+
+export default {
+  name: "DictionarySelect",
+  props: {
+    name: {
+      type: String,
+      required: true
+    },
+    value: {
+      type: [String, Number],
+      default: ""
+    },
+    returnType: {
+      type: String,
+      default: "value",
+      validator: (value: string) => {
+        return ["label", "value"].indexOf(value) !== -1;
+      },
+    },
+  },
+  setup(props, { attrs, emit }) {
+    const selected = ref(props.value);
+    const options = ref<Array<DictionaryOption>>([]);
+
+    const dictionaryOptions = computed<Array<DictionaryOption>>(() => {
+      const dict = getDictionaryFromStorage() || getDictByName(props.name);
+      if (dict) {
+        return dict.map(item => ({
+          label: item.dataText,
+          value: item.dataCode,
+        }));
+      } else {
+        return [];
+      }
+    });
+
+    const selectedValue = computed(() => {
+      return props.returnType === "label" ? selectedLabel.value : selected.value;
+    });
+
+    const selectedLabel = computed(() => {
+      const option = dictionaryOptions.value.find(opt => opt.value === selected.value);
+      return option ? option.label : "";
+    });
+
+    function getDictByName(name: string) {
+      // 根据名称从远程获取数据字典
+    }
+
+    function getDictionaryFromStorage() {
+      const dict = JSON.parse(localStorage.getItem("dictionary"));
+      return dict && dict[props.name]
+    }
+
+    watch(() => props.name, () => {
+      options.value = dictionaryOptions.value;
+    }, { immediate: true });
+
+    watch(() => props.value, (newValue) => {
+      selected.value = newValue;
+    }, { immediate: true });
+
+    watch(() => selected.value, () => {
+      emit("update:value", selectedValue.value);
+    });
+
+    onMounted(() => {
+      console.log(attrs);
+    });
+
+    return {
+      selected,
+      options,
+      dictionaryOptions,
+      selectedValue,
+      selectedLabel,
+      getDictByName,
+      getDictionaryFromStorage
+    };
+  },
+};
+</script>
+<template>
+  <el-select
+    v-model="selected"
+    v-bind="$attrs"
+    :key="name"
+    filterable
+    clearable
+  >
+    <el-option
+      v-for="(option, index) in options"
+      :key="index"
+      :label="option.label"
+      :value="option.value"
+    />
+  </el-select>
+</template>
+```
