@@ -72,6 +72,12 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
         {text: 'Dialog', link: '/subassembly/copy/dialog'},
       ]
     },
+    {
+      text: 'webpack',
+      items: [
+        {text: 'webpack', link: '/subassembly/webpack/index'},
+      ]
+    },
     { text: 'npm 常用命令', link: '/subassembly/node/npm' },
 
   ],

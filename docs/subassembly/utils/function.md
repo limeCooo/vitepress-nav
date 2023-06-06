@@ -80,7 +80,7 @@ function isIDCard(idCard) {
   - **age:** 年龄
 
 ```js
-function calculateAge(birthDate, deathDate) {
+export function calculateAge(birthDate, deathDate) {
   if (!birthDate) {
     console.log('出生日期不能为空！');
     return ''
@@ -121,7 +121,7 @@ function calculateAge(birthDate, deathDate) {
   - **default:** 2023-04-01
 
 ```js
-function getNowDate(type, monthsToAdd = 0) {
+export function getNowDate(type, monthsToAdd = 0) {
   let now = new Date();
   now.setMonth(now.getMonth() + monthsToAdd);
   let year = now.getFullYear(); //得到年份
@@ -144,4 +144,4 @@ function getNowDate(type, monthsToAdd = 0) {
   }
 }
 
-```
+

@@ -18,8 +18,8 @@
         ref="queryForm"
         label-width="100px"
       >
-        <el-form-item label="逝者姓名">
-          <el-input v-model="queryForm.deadName"></el-input>
+        <el-form-item label="name">
+          <el-input v-model="queryForm.name"></el-input>
         </el-form-item>
         <el-form-item label="查询日期">
           <el-date-picker v-model="queryForm.startTime" type="date" placeholder="选择开始时间"
@@ -54,11 +54,11 @@
           }"
         :height="tableHeight"
       >
-        <el-table-column label="逝者姓名" align='center' prop="deadName" width=""></el-table-column>
-        <el-table-column label="年龄" align="center" prop="deadAge" width=""></el-table-column>
-        <el-table-column label="性别" align='center' prop="deadGender" width=""></el-table-column>
-        <el-table-column label="炉号" align='center' prop="furnaceCode" width=""></el-table-column>
-        <el-table-column label="火化状态" align='center' prop="processState" width=""></el-table-column>
+        <el-table-column label="字段1" align='center' prop="name1" width=""></el-table-column>
+        <el-table-column label="字段1" align="center" prop="name1" width=""></el-table-column>
+        <el-table-column label="字段1" align='center' prop="name1" width=""></el-table-column>
+        <el-table-column label="字段1" align='center' prop="name1" width=""></el-table-column>
+        <el-table-column label="字段1" align='center' prop="name1" width=""></el-table-column>
       </el-table>
       <el-row type="flex" justify="end" class="pagination-wrap">
         <el-pagination
