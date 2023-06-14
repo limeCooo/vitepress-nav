@@ -24,8 +24,8 @@
 
 ```js
   chainWebpack: (config) => {
-    config.plugin('xcCache').use(HardSourceWebpackPlugin); // 自定义插件名称
-    config.plugin('xcTime').use(SpeedMeasurePlugin);
+    config.plugin('xcCache').use(HardSourceWebpackPlugin)
+    config.plugin('xcTime').use(SpeedMeasurePlugin)
   }
 ```
 -  普通写法

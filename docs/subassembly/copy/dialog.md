@@ -59,7 +59,7 @@ export default {
 </script>
 ```
 ## Script 保存方法/删除方法
-```js
+```vue
 showFormDialog(type, row) {
   if (type === 'edit') {
     this.paramsForm = {...row}
@@ -89,14 +89,14 @@ async saveSmsInfo() {
     if (code !== 1) {
       this.$message(message);
     } else {
-      this.$message.success(data);
+      this.$message.success(message);
       this.formDialogVisible = false;
       // 调用查询方法
       // await this.queryTableList();
     }
   } catch (error) {
     console.error(error);
-    this.$message.error('保存短信信息失败');
+    this.$message.error('保存失败');
   }
 },
 async deleteClick({id, version}) {
@@ -105,7 +105,7 @@ async deleteClick({id, version}) {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
     })
-    let {code, data, message} = await deleteSms({id, version})
+    let {code, data, message} = await deleteSms({id})
     if (code !== 1) {
       this.$message(message)
     }else{
@@ -153,14 +153,8 @@ async deleteClick({id, version}) {
           }"
         :height="tableHeight"
       >
-        <el-table-column label="模板名称" align='center' prop="smsTitle" width="200"></el-table-column>
-        <el-table-column label="短信内容" align="center" prop="smsContent" width=""></el-table-column>
-        <el-table-column label="数据版本号" align='center' prop="version" width="200"></el-table-column>
-        <el-table-column label="是否启用" align='center' prop="asSend" width="100">
-          <template slot-scope="scope">
-            {{ scope.row.asSend === 0 ? '关闭' : '启用' }}
-          </template>
-        </el-table-column>
+        <el-table-column label="name" align='center' prop="smsTitle" width="200"></el-table-column>
+        <el-table-column label="content" align="center" prop="smsContent" width=""></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template slot-scope="scope">
             <el-button type="primary" size="small" @click.native.prevent="showFormDialog('edit',scope.row)">修改
@@ -191,17 +185,11 @@ async deleteClick({id, version}) {
       @close="resetForm"
     >
       <el-form :model="paramsForm" :rules="rules" ref="paramsForm" label-width="100px">
-        <el-form-item label="模板名称" prop="smsTitle">
-          <el-input v-model="paramsForm.smsTitle" placeholder="请输入模板名称"></el-input>
+        <el-form-item label="name" prop="smsTitle">
+          <el-input v-model="paramsForm.smsTitle" placeholder="请输入name"></el-input>
         </el-form-item>
-        <el-form-item label="是否启用" prop="asSend">
-          <el-select v-model="paramsForm.asSend">
-            <el-option label="关闭" :value="0"/>
-            <el-option label="启用" :value="1"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="短信内容" prop="smsContent">
-          <el-input v-model="paramsForm.smsContent" placeholder="请输入短信内容" type="textarea"
+        <el-form-item label="内容" prop="smsContent">
+          <el-input v-model="paramsForm.smsContent" placeholder="请输入内容" type="textarea"
                     :autosize="{ minRows: 6, maxRows: 12}"></el-input>
         </el-form-item>
       </el-form>
@@ -215,7 +203,7 @@ async deleteClick({id, version}) {
 </template>
 
 <script>
-import * as API from '@/api/configuration'
+
 
 export default {
   name: "smsManagement",
@@ -344,13 +332,13 @@ export default {
         if (code !== 1) {
           this.$message(message);
         } else {
-          this.$message.success(data);
+          this.$message.success(message);
           this.formDialogVisible = false;
           await this.queryTableList();
         }
       } catch (error) {
         console.error(error);
-        this.$message.error('保存短信信息失败');
+        this.$message.error('保存失败');
       }
     },
 
@@ -360,11 +348,11 @@ export default {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         })
-        let {code, data, message} = await deleteSms({id, version})
+        let {code, data, message} = await deleteSms({id})
         if (code !== 1) {
           this.$message(message)
         } else {
-          this.$message.success(data)
+          this.$message.success(message)
           await this.queryTableList()
         }
       } catch (err) {
