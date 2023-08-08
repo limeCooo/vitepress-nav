@@ -143,5 +143,37 @@ export function getNowDate(type, monthsToAdd = 0) {
     return `${year}-${month}-${date}`;
   }
 }
+```
+
+:::
+
+## 数组去重的方法有哪些？
+```js
+
+function unique(arr){
+  return Array.from(new Set(arr))
+}
+function unique(arr){
+  var res = [];
+  for(var i = 0; i < arr.length; i++){
+    if(res.indexOf(arr[i]) === -1) res.push(arr[i])
+  }
+  return res;
+}
+
+function unique(arr){
+  var obj = {};
+  var res = [];
+  for(var i = 0; i < arr.length; i++){
+    if(!obj[arr[i]]){
+      res.push(arr[i]);
+      obj[arr[i]] = true;
+    }
+  }
+  return res;
+}
+let arr = [1,1,1,2,3,2,3,4,5,6,6]
+```
+
 
 
